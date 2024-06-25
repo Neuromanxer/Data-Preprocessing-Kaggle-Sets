@@ -1,0 +1,13 @@
+from kafka import KafkaProducer
+import pandas as pd
+
+# Load the Kaggle dataset
+data = pd.read_csv('kaggle_dataset.csv')
+
+# Initialize Kafka producer
+producer = KafkaProducer(bootstrap_servers='localhost:9092')
+
+# Send data to Kafka topic
+for index, row in data.iterrows():
+    producer.send('sensor_data', value=row.to_json().encode('utf-8'))
+producer.close()
